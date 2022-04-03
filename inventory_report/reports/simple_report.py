@@ -11,6 +11,9 @@ class SimpleReport():
     def convert_date(date):
         return datetime.strptime(date, "%Y-%m-%d").date()
 
+    def count_names_dict(name_list):
+        return dict(Counter(name_list))
+
     @classmethod
     def generate(cls, data):
         oldest_date = cls.convert_date("2022-03-02")
@@ -25,8 +28,8 @@ class SimpleReport():
             if date.today() < converted_validation_date < nearest_date:
                 nearest_date = converted_validation_date
             companies_name_list.append(product["nome_da_empresa"])
-            count_names = dict(Counter(companies_name_list))
-            first_company = max(count_names, key=count_names.get)
+        count_names = cls.count_names_dict(companies_name_list)
+        first_company = max(count_names, key=count_names.get)
         return (
             f'{text1} {oldest_date}\n'
             f'{text2} {nearest_date}\n'
